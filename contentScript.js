@@ -1,8 +1,14 @@
-let currentOverlay;
-let currentTarget;
-let capturePadding = 0;
-let hoverPadding = 0;
-let linkInterceptor;
+(() => {
+  if (window.reviewItInjected) {
+    return;
+  }
+  window.reviewItInjected = true;
+
+  let currentOverlay;
+  let currentTarget;
+  let capturePadding = 0;
+  let hoverPadding = 0;
+  let linkInterceptor;
 
 function createOverlay(rect, pad) {
   const overlay = document.createElement('div');
@@ -185,3 +191,5 @@ chrome.runtime.onMessage.addListener((message) => {
     showDialog(message.dataUrl);
   }
 });
+
+})();
