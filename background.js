@@ -24,10 +24,14 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       canvas.convertToBlob({ type: 'image/png' }).then(blob => {
         const reader = new FileReader();
         reader.onload = () => {
-          chrome.tabs.sendMessage(tabId, {
+          const message = {
             type: 'screenshot-captured',
             dataUrl: reader.result
-          });
+          };
+          // send to content script on the page
+          chrome.tabs.sendMessage(tabId, message);
+          // also notify popup or other extension pages
+          chrome.runtime.sendMessage(message);
         };
         reader.readAsDataURL(blob);
       });
